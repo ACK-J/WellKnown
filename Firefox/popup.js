@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const domainDisplay = document.getElementById("domainDisplay");
 
   // Show "Loading..." message initially.
-  list.innerHTML = "<li><strong>Loading...</strong></li>";
+  noEndpointsMessage.innerHTML = "<strong>Loading...</strong>";
   
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
     const activeTab = tabs[0];

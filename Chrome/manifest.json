@@ -9,7 +9,13 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "256": "icons/brain-256.png"
+    }
+  },
+  "icons": {
+    "256": "icons/brain-256.png"
   }
 }
 
