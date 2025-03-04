@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>WellKnown Endpoints</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+    h1 {
+      font-size: 20px;
+      text-align: center;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    .italicFont {
+      font-style: italic;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    #domainDisplay {
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      margin: 5px 0;
+    }
+    .endpoint-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #fafafa;
+      transition: background-color 0.3s ease;
+    }
+    .endpoint-card:hover {
+      background-color: #f0f0f0;
+    }
+    .endpoint-link {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      flex: 1;
+    }
+    .status {
+      font-size: 12px;
+      color: #666;
+      margin-left: 10px;
+    }
+    .no-endpoints {
+      text-align: center;
+      color: #777;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><span class="italicFont">.Well-Known</span>  Endpoints</h1>
+    <div id="domainDisplay"></div>
+    <ul id="endpointsList"></ul>
+    <div id="noEndpointsMessage" class="no-endpoints" style="display: none;">
+      No well-known endpoints found.
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
+
