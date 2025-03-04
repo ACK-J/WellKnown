@@ -16,6 +16,11 @@
   },
   "icons": {
     "256": "icons/brain-256.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{be8376a3-71dc-454d-a795-48a4e7782656}"
+    }
   }
 }
 
