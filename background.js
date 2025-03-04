@@ -1,8 +1,6 @@
 // Combined configuration object for endpoints.
-// Keys are the endpoint (or file) names as they appear in the URL (without any leading slash).
-// The "locations" array specifies where to check: "root" for the root of the domain,
-// ".well-known" for the /.well-known/ directory, or both.
 const ENDPOINTS_CONFIG = {
+  // Existing endpoints
   "acme-challenge": {
     description: "ACME challenge for certificate validation (RFC8555).",
     locations: [".well-known"]
@@ -375,6 +373,7 @@ const ENDPOINTS_CONFIG = {
     description: "Lightning Network endpoint for LNURL Pay resolution.",
     locations: [".well-known"]
   },
+  // Additional common endpoints (checked at both locations)
   "robots.txt": {
     description: "Standard file for web crawler instructions.",
     locations: ["root", ".well-known"]
@@ -403,6 +402,7 @@ const ENDPOINTS_CONFIG = {
     description: "Browser configuration file for Windows tiles.",
     locations: ["root", ".well-known"]
   },
+  // New endpoints from further research (well-known endpoints)
   "ai-plugin.json": {
     description: "AI plugin configuration file.",
     locations: [".well-known"]
@@ -471,6 +471,7 @@ const ENDPOINTS_CONFIG = {
     description: "SFTP configuration file.",
     locations: [".well-known"]
   },
+  // Additional dotfiles and hidden files (typically found at the root)
   ".bash_history": {
     description: "Shell history file (potentially sensitive).",
     locations: ["root"]
@@ -641,9 +642,29 @@ const ENDPOINTS_CONFIG = {
 let discoveredByTab = {};
 let lastOriginByTab = {};
 
-// Check endpoints in parallel.
+// Helper sleep function.
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Process an array in batches to throttle concurrency.
+async function processInBatches(items, batchSize, delay, processFn) {
+  const results = [];
+  for (let i = 0; i < items.length; i += batchSize) {
+    const batch = items.slice(i, i + batchSize);
+    const batchResults = await Promise.all(batch.map(processFn));
+    results.push(...batchResults);
+    if (i + batchSize < items.length) {
+      await sleep(delay);
+    }
+  }
+  return results;
+}
+
+// Check endpoints with throttling.
 async function checkEndpoints(tabId, origin) {
-  const fetchPromises = Object.keys(ENDPOINTS_CONFIG).map(async (endpoint) => {
+  const endpoints = Object.keys(ENDPOINTS_CONFIG);
+  const results = await processInBatches(endpoints, 5, 200, async (endpoint) => {
     const config = ENDPOINTS_CONFIG[endpoint];
     let foundAt = [];
     for (const loc of config.locations) {
@@ -675,7 +696,6 @@ async function checkEndpoints(tabId, origin) {
     }
   });
   
-  const results = await Promise.all(fetchPromises);
   const discovered = results.filter(item => item !== null);
   discoveredByTab[tabId] = discovered;
   
